@@ -1,0 +1,39 @@
+--教师表
+create table leave_teacher(
+       tid number(6) primary key, --ID
+       taccount varchar2(20) not null unique, --账号
+       tpassword varchar2(20) not null,--密码
+       tname varchar2(20) not null, --姓名
+       tsex varchar2(1) default '1' check(tsex in('1','2')) -- 性别 1男 2女
+);
+
+--学生表
+create table leave_student(
+   sid number(6) primary key, --ID
+   sno varchar2(20) not null unique, --学号
+   spassword varchar2(20) not null, --密码
+   sname varchar2(20) not null, --姓名
+   ssex varchar2(1) default '1' check(ssex in('1','2')), --性别 1男 2女
+   sbirth date,
+   stelephone varchar2(20),
+   sdeletestatus varchar2(1) default '1' check(sdeletestatus in('0','1')), --删除状态，0 删除 1未删除
+   tid number(6) not null constraint fk_student_teacher references leave_teacher(tid) --教师外键
+);
+
+--请假表
+create table leave_leave(
+       lid number(8) primary key, --ID
+       sid number(6) not null constraint fk_leave_student references leave_student(sid), --学生外键
+       tid number(6) not null constraint fk_leave_teacher references leave_teacher(tid), --教师外键
+       lapplytime date,--申请时间
+       lbegintime date,--请假开始时间
+       lendtime date,--请假结束时间
+       lreason varchar2(400),--请假理由
+       lapprovestatus varchar2(1) default '0' check(lapprovestatus in('0','1','2')),
+--审批状态 0 未审批 1 审批通过 2审批不通过
+       lfeedback varchar2(200) -- 反馈信息    
+);
+
+--序列
+create sequence seq_leave increment by 1 start with 1 maxvalue 999999999;
+
