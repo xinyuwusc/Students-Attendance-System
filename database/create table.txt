@@ -1,0 +1,38 @@
+--teacher table
+create table leave_teacher(
+       tid number(6) primary key,             --ID
+       taccount varchar2(20) not null unique, --account
+       tpassword varchar2(20) not null,       --passport
+       tname varchar2(20) not null,           --name
+       tsex varchar2(1) default '1' check(tsex in('1','2')) -- sex
+);
+
+--student table
+create table leave_student(
+   sid number(6) primary key,        --ID
+   sno varchar2(20) not null unique, --student number
+   spassword varchar2(20) not null,  --passport
+   sname varchar2(20) not null,      --name
+   ssex varchar2(1) default '1' check(ssex in('1','2')), --sex
+   sbirth date,
+   stelephone varchar2(20),
+   sdeletestatus varchar2(1) default '1' check(sdeletestatus in('0','1')), 
+   tid number(6) not null constraint fk_student_teacher references leave_teacher(tid) --ID
+);
+
+--leave table
+create table leave_leave(
+       lid number(8) primary key, --ID
+       sid number(6) not null constraint fk_leave_student references leave_student(sid), --student ID
+       tid number(6) not null constraint fk_leave_teacher references leave_teacher(tid), --teacher ID
+       lapplytime date,--apply time
+       lbegintime date,--leave start time
+       lendtime date,--leave end time
+       lreason varchar2(400),--leave reason
+       lapprovestatus varchar2(1) default '0' check(lapprovestatus in('0','1','2')), --leave approved or not
+       lfeedback varchar2(200) --feedback    
+);
+
+
+create sequence seq_leave increment by 1 start with 1 maxvalue 999999999;
+
