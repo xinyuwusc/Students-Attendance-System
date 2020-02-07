@@ -1,7 +1,0 @@
-//util的date转成sql的date
-new java.sql.Timestamp(student.getSbirth().getTime());
-//关闭数据库资源
-BasicDaoJDBC.close(rset, BasicDaoJDBC.getPs(), BasicDaoJDBC.getCt());
-
-//页面跳转
-request.getRequestDispatcher("jsps/student/show_leaves.jsp").forward(request, response);
